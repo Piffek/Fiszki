@@ -16,7 +16,12 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+
 public class ScreenPageAdapter extends PagerAdapter {
+
+    @BindView(R.id.englishText)
+    TextView englishText;
 
     private Context ctx;
     private LayoutInflater layoutInflater;
