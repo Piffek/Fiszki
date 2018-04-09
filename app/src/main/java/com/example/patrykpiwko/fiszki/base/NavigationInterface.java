@@ -1,6 +1,6 @@
-package com.example.patrykpiwko.fiszki.activities;
+package com.example.patrykpiwko.fiszki.base;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 public interface NavigationInterface {
     public void showFragment(Fragment fragment);

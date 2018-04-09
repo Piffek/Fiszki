@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import com.example.patrykpiwko.fiszki.R;
 import com.example.patrykpiwko.fiszki.base.BaseActivity;
-import com.example.patrykpiwko.fiszki.fragments.pages.ScreenPageFragment;
+import com.example.patrykpiwko.fiszki.fragments.ScreenPageFragment;
 
 import butterknife.BindView;
 
