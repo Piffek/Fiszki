@@ -3,10 +3,7 @@ package com.example.patrykpiwko.fiszki.fragments.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.example.patrykpiwko.fiszki.fragments.ScreenPageFragment;
-
 import java.util.List;
-
 
 public class ScreenPageAdapter extends FragmentPagerAdapter {
 

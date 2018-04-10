@@ -1,0 +1,492 @@
+Index: app/src/main/res/layout/activity_screen_slide_pager.xml
+===================================================================
+--- app/src/main/res/layout/activity_screen_slide_pager.xml	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/res/layout/activity_screen_slide_pager.xml	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    android:id="@+id/pager"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    tools:context="com.example.patrykpiwko.fiszki.activities.ScreenSlidePagerActivity">
+-
+-</android.support.v4.view.ViewPager>
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -16,7 +16,6 @@
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
+-        <activity android:name=".activities.ScreenSlidePagerActivity"></activity>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/activities/NavigationInterface.java
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/activities/NavigationInterface.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/java/com/example/patrykpiwko/fiszki/base/NavigationInterface.java	(revision )
+@@ -1,6 +1,6 @@
+-package com.example.patrykpiwko.fiszki.activities;
++package com.example.patrykpiwko.fiszki.base;
+ 
+-import android.app.Fragment;
++import android.support.v4.app.Fragment;
+ 
+ public interface NavigationInterface {
+     public void showFragment(Fragment fragment);
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/fragments/pages/ScreenPageFragment.java
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/fragments/pages/ScreenPageFragment.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/java/com/example/patrykpiwko/fiszki/fragments/pages/ScreenPageFragment.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
+@@ -1,38 +0,0 @@
+-package com.example.patrykpiwko.fiszki.fragments.pages;
+-
+-import android.os.Bundle;
+-import android.support.annotation.Nullable;
+-import android.support.v4.view.ViewPager;
+-import android.view.View;
+-
+-import com.example.patrykpiwko.fiszki.R;
+-import com.example.patrykpiwko.fiszki.base.BaseFragment;
+-import com.example.patrykpiwko.fiszki.fragments.pages.adapter.ScreenPageAdapter;
+-
+-import butterknife.BindView;
+-
+-public class ScreenPageFragment extends BaseFragment {
+-
+-    @BindView(R.id.pager)
+-    ViewPager viewPager;
+-
+-
+-    ScreenPageAdapter pageAdapter;
+-
+-    @Override
+-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+-        super.onViewCreated(view, savedInstanceState);
+-        pageAdapter = new ScreenPageAdapter(getActivity());
+-        viewPager.setAdapter(pageAdapter);
+-    }
+-
+-    @Override
+-    public String getTitle() {
+-        return "English Lesson";
+-    }
+-
+-    @Override
+-    public int getContentFragment() {
+-        return R.layout.fragment_screen_page;
+-    }
+-}
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/fragments/adapter/ScreenPageAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/fragments/adapter/ScreenPageAdapter.java	(revision )
++++ app/src/main/java/com/example/patrykpiwko/fiszki/fragments/adapter/ScreenPageAdapter.java	(revision )
+@@ -0,0 +1,30 @@
++package com.example.patrykpiwko.fiszki.fragments.adapter;
++
++import android.support.v4.app.Fragment;
++import android.support.v4.app.FragmentManager;
++import android.support.v4.app.FragmentPagerAdapter;
++import com.example.patrykpiwko.fiszki.fragments.ScreenPageFragment;
++
++import java.util.List;
++
++
++public class ScreenPageAdapter extends FragmentPagerAdapter {
++
++    private List<String> items;
++
++    public ScreenPageAdapter(FragmentManager fm, List<String> items) {
++        super(fm);
++        this.items = items;
++    }
++
++    @Override
++    public Fragment getItem(int position) {
++        return ItemFragment.create(items.get(position));
++    }
++
++    @Override
++    public int getCount() {
++        return items.size();
++    }
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/base/BaseActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/base/BaseActivity.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/java/com/example/patrykpiwko/fiszki/base/BaseActivity.java	(revision )
+@@ -1,14 +1,12 @@
+ package com.example.patrykpiwko.fiszki.base;
+ 
+-import android.app.Fragment;
+-import android.app.FragmentManager;
+-import android.app.FragmentTransaction;
++import android.support.v4.app.Fragment;
++import android.support.v4.app.FragmentManager;
++import android.support.v4.app.FragmentTransaction;
+ import android.os.Bundle;
+ import android.support.annotation.Nullable;
+ import android.support.v7.app.AppCompatActivity;
+ 
+-import com.example.patrykpiwko.fiszki.activities.NavigationInterface;
+-
+ import butterknife.ButterKnife;
+ 
+ public abstract class BaseActivity extends AppCompatActivity implements NavigationInterface {
+@@ -31,7 +29,7 @@
+             return;
+         }
+ 
+-        FragmentManager fm = getFragmentManager();
++        FragmentManager fm = getSupportFragmentManager();
+         FragmentTransaction ft = fm.beginTransaction();
+         ft.replace(getFragmentContainer(), fragment).commit();
+     }
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/activities/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/activities/MainActivity.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/java/com/example/patrykpiwko/fiszki/activities/MainActivity.java	(revision )
+@@ -5,7 +5,7 @@
+ import android.widget.TextView;
+ import com.example.patrykpiwko.fiszki.R;
+ import com.example.patrykpiwko.fiszki.base.BaseActivity;
+-import com.example.patrykpiwko.fiszki.fragments.pages.ScreenPageFragment;
++import com.example.patrykpiwko.fiszki.fragments.ScreenPageFragment;
+ 
+ import butterknife.BindView;
+ 
+Index: app/src/main/res/layout/fragment_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_item.xml	(revision )
++++ app/src/main/res/layout/fragment_item.xml	(revision )
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:background="@color/colorAccent"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    xmlns:tools="http://schemas.android.com/tools">
++
++    <TextView
++        android:id="@+id/exampleTitle"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        tools:text="Fiszka"
++        android:textSize="20sp"
++        android:layout_centerInParent="true"
++        />
++
++</android.widget.RelativeLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/fragments/ScreenPageFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/fragments/ScreenPageFragment.java	(revision )
++++ app/src/main/java/com/example/patrykpiwko/fiszki/fragments/ScreenPageFragment.java	(revision )
+@@ -0,0 +1,51 @@
++package com.example.patrykpiwko.fiszki.fragments;
++
++import android.content.Context;
++import android.os.Bundle;
++import android.support.annotation.Nullable;
++import android.support.v4.view.ViewPager;
++import android.view.View;
++import com.example.patrykpiwko.fiszki.R;
++import com.example.patrykpiwko.fiszki.base.BaseFragment;
++import com.example.patrykpiwko.fiszki.fragments.adapter.ScreenPageAdapter;
++import java.util.ArrayList;
++
++import butterknife.BindView;
++
++public class ScreenPageFragment extends BaseFragment {
++
++    @BindView(R.id.pager)
++    ViewPager viewPager;
++
++    private Context ctx;
++    ScreenPageAdapter mPageAdapter;
++    ArrayList<String> listOfWord = new ArrayList<String>();
++
++    public ScreenPageFragment(){
++        super();
++        listOfWord.add("Movie");
++        listOfWord.add("Movie2");
++        listOfWord.add("Dog");
++        listOfWord.add("Mobile");
++        listOfWord.add("Phone");
++    }
++
++    @Override
++    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
++        super.onViewCreated(view, savedInstanceState);
++
++        mPageAdapter = new ScreenPageAdapter(getFragmentManager(), listOfWord);
++        viewPager.setAdapter(mPageAdapter);
++    }
++
++    @Override
++    public String getTitle() {
++        return "Fragment";
++    }
++
++    public int getContentFragment() {
++        return R.layout.fragment_screen_page;
++    }
++
++
++}
+Index: app/src/main/res/layout/fragment_screen_page.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_screen_page.xml	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/res/layout/fragment_screen_page.xml	(revision )
+@@ -4,17 +4,10 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+ 
+-    <TextView
+-        android:id="@+id/englishText"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content" />
+-
+     <android.support.v4.view.ViewPager
+-        android:layout_below="@+id/englishText"
+         android:id="@+id/pager"
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent">
++        android:layout_height="match_parent" />
+ 
+-    </android.support.v4.view.ViewPager>
+ 
+ </android.widget.RelativeLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/base/BaseFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/base/BaseFragment.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/java/com/example/patrykpiwko/fiszki/base/BaseFragment.java	(revision )
+@@ -1,16 +1,13 @@
+ package com.example.patrykpiwko.fiszki.base;
+ 
+-import android.app.Fragment;
++import android.support.v4.app.Fragment;
+ import android.content.Context;
+ import android.os.Bundle;
+ import android.support.annotation.Nullable;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+-
+ import com.example.patrykpiwko.fiszki.activities.MainActivityInterface;
+-import com.example.patrykpiwko.fiszki.activities.NavigationInterface;
+-
+ import butterknife.ButterKnife;
+ 
+ 
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/fragments/pages/adapter/ScreenPageAdapter.java
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/fragments/pages/adapter/ScreenPageAdapter.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/java/com/example/patrykpiwko/fiszki/fragments/pages/adapter/ScreenPageAdapter.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
+@@ -1,64 +0,0 @@
+-package com.example.patrykpiwko.fiszki.fragments.pages.adapter;
+-
+-import android.annotation.SuppressLint;
+-import android.content.Context;
+-import android.support.v4.view.PagerAdapter;
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-import android.widget.LinearLayout;
+-import android.widget.RelativeLayout;
+-import android.widget.TextView;
+-
+-import com.example.patrykpiwko.fiszki.R;
+-
+-import org.w3c.dom.Text;
+-
+-import java.util.ArrayList;
+-
+-import butterknife.BindView;
+-
+-public class ScreenPageAdapter extends PagerAdapter {
+-
+-    @BindView(R.id.englishText)
+-    TextView englishText;
+-
+-    private Context ctx;
+-    private LayoutInflater layoutInflater;
+-    ArrayList<String> listOfWord = new ArrayList<String>();
+-
+-
+-    public ScreenPageAdapter(Context ctx){
+-        this.ctx = ctx;
+-        listOfWord.add("Movie");
+-        listOfWord.add("Movie2");
+-        listOfWord.add("Dog");
+-        listOfWord.add("Mobile");
+-        listOfWord.add("Phone");
+-    }
+-
+-    @Override
+-    public int getCount() {
+-        return listOfWord.size();
+-    }
+-
+-    @Override
+-    public boolean isViewFromObject(View view, Object object) {
+-        return (view==(RelativeLayout)object);
+-    }
+-
+-    @Override
+-    public Object instantiateItem(ViewGroup container, int position) {
+-        layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+-        View item_view = layoutInflater.inflate(R.layout.fragment_screen_page, container, false);
+-        TextView textView = (TextView) item_view.findViewById(R.id.englishText);
+-        textView.setText("Word: "+listOfWord.get(position)+" is on position "+position);
+-        container.addView(item_view);
+-        return item_view;
+-    }
+-
+-    @Override
+-    public void destroyItem(ViewGroup container, int position, Object object) {
+-        container.removeView((RelativeLayout)object);
+-    }
+-}
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/activities/ScreenSlidePagerActivity.java
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/activities/ScreenSlidePagerActivity.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
++++ app/src/main/java/com/example/patrykpiwko/fiszki/activities/ScreenSlidePagerActivity.java	(revision 61425370d89a9f5627d8e08551a6dba6fdaca065)
+@@ -1,47 +0,0 @@
+-package com.example.patrykpiwko.fiszki.activities;
+-
+-import android.content.Context;
+-import android.os.PersistableBundle;
+-import android.support.annotation.Nullable;
+-import android.support.v4.view.ViewPager;
+-import android.support.v7.app.AppCompatActivity;
+-import android.os.Bundle;
+-import android.util.AttributeSet;
+-import android.view.View;
+-
+-import com.example.patrykpiwko.fiszki.R;
+-import com.example.patrykpiwko.fiszki.base.BaseActivity;
+-import com.example.patrykpiwko.fiszki.fragments.pages.adapter.ScreenPageAdapter;
+-
+-import javax.xml.transform.sax.TemplatesHandler;
+-
+-public class ScreenSlidePagerActivity extends BaseActivity {
+-
+-    ViewPager viewPager;
+-    ScreenPageAdapter pageAdapter;
+-
+-    @Override
+-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+-        super.onCreate(savedInstanceState, persistentState);
+-
+-        viewPager = (ViewPager) findViewById(R.id.pager);
+-        pageAdapter = new ScreenPageAdapter(this);
+-        viewPager.setAdapter(pageAdapter);
+-    }
+-
+-    @Override
+-    protected int getContentView() {
+-        return R.layout.activity_screen_slide_pager;
+-    }
+-
+-    @Override
+-    protected int getFragmentContainer() {
+-        return 0;
+-    }
+-
+-    @Override
+-    protected void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-        setContentView(R.layout.activity_screen_slide_pager);
+-    }
+-}
+Index: app/src/main/java/com/example/patrykpiwko/fiszki/fragments/adapter/ItemFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/patrykpiwko/fiszki/fragments/adapter/ItemFragment.java	(revision )
++++ app/src/main/java/com/example/patrykpiwko/fiszki/fragments/adapter/ItemFragment.java	(revision )
+@@ -0,0 +1,50 @@
++package com.example.patrykpiwko.fiszki.fragments.adapter;
++
++import android.os.Bundle;
++import android.support.annotation.Nullable;
++import android.view.View;
++import android.widget.TextView;
++
++import com.example.patrykpiwko.fiszki.R;
++import com.example.patrykpiwko.fiszki.base.BaseFragment;
++
++import butterknife.BindView;
++
++public class ItemFragment extends BaseFragment {
++
++    public static ItemFragment create(String title){
++        ItemFragment itemFragment = new ItemFragment();
++        itemFragment.setItem(title);
++        return itemFragment;
++    }
++
++    @BindView(R.id.exampleTitle)
++    TextView exampleTitle;
++
++    private String item;
++
++    @Override
++    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
++        super.onViewCreated(view, savedInstanceState);
++
++        exampleTitle.setText(getItem());
++    }
++
++    @Override
++    public String getTitle() {
++        return null;
++    }
++
++    @Override
++    public int getContentFragment() {
++        return R.layout.fragment_item;
++    }
++
++    public String getItem() {
++        return item;
++    }
++
++    public void setItem(String item) {
++        this.item = item;
++    }
++}

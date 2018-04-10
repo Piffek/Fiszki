@@ -2,6 +2,7 @@ package com.example.patrykpiwko.fiszki.fragments.adapter;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import com.example.patrykpiwko.fiszki.R;
 import com.example.patrykpiwko.fiszki.base.BaseFragment;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class ItemFragment extends BaseFragment {
 
@@ -46,5 +48,10 @@ public class ItemFragment extends BaseFragment {
 
     public void setItem(String item) {
         this.item = item;
+    }
+
+    @OnClick(R.id.exampleTitle)
+    public void clickToPager(){
+        Log.d("PAGE", "It's click! " + getItem());
     }
 }
