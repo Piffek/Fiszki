@@ -8,7 +8,10 @@ import android.view.View;
 import com.example.patrykpiwko.fiszki.R;
 import com.example.patrykpiwko.fiszki.base.BaseFragment;
 import com.example.patrykpiwko.fiszki.fragments.adapter.ScreenPageAdapter;
+import com.example.patrykpiwko.fiszki.models.Word;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -19,22 +22,31 @@ public class ScreenPageFragment extends BaseFragment {
 
     private Context ctx;
     ScreenPageAdapter mPageAdapter;
-    ArrayList<String> listOfWord = new ArrayList<String>();
+    List<Word> listOfWord = new ArrayList<>();
+
 
     public ScreenPageFragment(){
         super();
-        listOfWord.add("Movie");
-        listOfWord.add("Movie2");
-        listOfWord.add("Dog");
-        listOfWord.add("Mobile");
-        listOfWord.add("Phone");
+    }
+
+    List<Word> getWordList(){
+        Word word = new Word("Word");
+        listOfWord.add(word);
+
+        word = new Word("Dog");
+        listOfWord.add(word);
+
+        word = new Word("Movie");
+        listOfWord.add(word);
+
+        return listOfWord;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mPageAdapter = new ScreenPageAdapter(getFragmentManager(), listOfWord);
+        mPageAdapter = new ScreenPageAdapter(getFragmentManager(), getWordList());
         viewPager.setAdapter(mPageAdapter);
     }
 
