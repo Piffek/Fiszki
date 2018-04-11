@@ -1,9 +1,11 @@
 package com.example.patrykpiwko.fiszki.fragments.adapter;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.patrykpiwko.fiszki.R;
@@ -22,6 +24,9 @@ public class ItemFragment extends BaseFragment {
 
     @BindView(R.id.exampleTitle)
     TextView exampleTitle;
+
+    @BindView(R.id.parentLayout)
+    View parentLayout;
 
     private String item;
 
@@ -52,6 +57,15 @@ public class ItemFragment extends BaseFragment {
 
     @OnClick(R.id.exampleTitle)
     public void clickToPager(){
-        Log.d("PAGE", "It's click! " + getItem());
+        parentLayout.animate()
+                .rotationBy(360)
+                .setDuration(400)
+                .setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        exampleTitle.setText("cos");
+                    }
+                })
+                .start();
     }
 }

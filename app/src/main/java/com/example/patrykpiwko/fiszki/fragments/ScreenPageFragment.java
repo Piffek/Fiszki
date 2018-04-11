@@ -46,6 +46,4 @@ public class ScreenPageFragment extends BaseFragment {
     public int getContentFragment() {
         return R.layout.fragment_screen_page;
     }
-
-
 }
